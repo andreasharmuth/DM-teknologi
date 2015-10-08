@@ -1,0 +1,62 @@
+boolean sensorkali = false;
+boolean sensorlas = false;
+boolean sensorvask = false;
+boolean sensordor = false;
+int t = 20; //kalibreringfaktor
+int lastvask;
+int lastlas;
+int lastdor;
+int las;
+int vask; 
+int dor;
+void setup(){
+    for(int pinNumber = 2; pinNumber<9;pinNumber++){
+        pinMode(pinNumber,OUTPUT);
+    }
+        Serial.begin(9600);
+} 
+void loop(){
+  if (!sensorkali){
+    if (!sensorlas){
+   lastlas = las;
+   las = analogRead(A1);
+  if ((las < lastlas+t) && (las > lastlas-t)){
+  sensorlas = true;
+  digitalWrite(2,HIGH);
+      }
+    } 
+   if (!sensorvask){
+   lastvask = vask;
+   vask = analogRead(A1);
+  if ((vask < lastvask+t) && (vask > lastvask-t)){
+  sensorvask = true;
+    digitalWrite(3,HIGH);
+      }
+    }
+       if (!sensordor){
+   lastdor = dor;
+   dor = analogRead(A1);
+  if ((dor < lastdor+t) && (dor > lastdor-t)){
+  sensordor = true;
+    digitalWrite(4,HIGH);
+      }
+    }
+  }
+ if (sensorlas && sensorvask && sensordor){
+   
+digitalWrite(4,LOW);
+digitalWrite(2,LOW);
+digitalWrite(3,LOW);
+delay(500);
+digitalWrite(4,HIGH);
+digitalWrite(2,HIGH);
+digitalWrite(3,HIGH);
+delay(500);
+digitalWrite(4,LOW);
+digitalWrite(2,LOW);
+digitalWrite(3,LOW);
+sensorkali = true;
+ }
+ delay(500);
+}
+
